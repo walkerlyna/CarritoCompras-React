@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar }) => {
+export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar, vaciarCart }) => {
 
     const isEmpty = useMemo(() => cart.length === 0, [cart])
 
@@ -12,14 +12,14 @@ export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar }) => {
                 <div className="row justify-content-center justify-content-md-between">
                     <div className="col-8 col-md-3">
                         <a href="index.html">
-                            <img className="img-fluid" src="./public/img/logo.svg" alt="imagen logo" />
+                            <img className="img-fluid" src="/img/logo.svg" alt="imagen logo" />
                         </a>
                     </div>
                     <nav className="col-md-6 a mt-5 d-flex align-items-start justify-content-end">
                         <div
                             className="carrito"
                         >
-                            <img className="img-fluid" src="./public/img/carrito.png" alt="imagen carrito" />
+                            <img className="img-fluid" src="/img/carrito.png" alt="imagen carrito" />
 
                             <div id="carrito" className="bg-white p-3">
 
@@ -41,7 +41,7 @@ export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar }) => {
                                                 {cart.map(guitar => (
                                                     <tr key={guitar.id}>
                                                         <td>
-                                                            <img className="img-fluid" src={`./public/img/${guitar.image}.jpg`} alt="imagen guitarra" />
+                                                            <img className="img-fluid" src={`/img/${guitar.image}.jpg`} alt="imagen guitarra" />
                                                         </td>
                                                         <td>{guitar.name}</td>
                                                         <td className="fw-bold">
@@ -51,16 +51,14 @@ export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar }) => {
                                                             <button
                                                                 onClick={() => lessGuitar(guitar.id)}
                                                                 type="button"
-                                                                className="btn btn-dark"
-                                                            >
+                                                                className="btn btn-dark">
                                                                 -
                                                             </button>
                                                             {guitar.cantidad}
                                                             <button
                                                                 onClick={() => moreGuitar(guitar.id)}
                                                                 type="button"
-                                                                className="btn btn-dark"
-                                                            >
+                                                                className="btn btn-dark">
                                                                 +
                                                             </button>
                                                         </td>
@@ -68,8 +66,7 @@ export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar }) => {
                                                             <button
                                                                 onClick={() => removeFromCart(guitar.id)}
                                                                 className="btn btn-danger"
-                                                                type="button"
-                                                            >
+                                                                type="button">
                                                                 X
                                                             </button>
                                                         </td>
@@ -81,7 +78,11 @@ export const Header = ({ cart, removeFromCart, moreGuitar, lessGuitar }) => {
                                     </>
                                 )}
 
-                                <button className="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                                <button
+                                    onClick={vaciarCart}
+                                    className="btn btn-dark w-100 mt-3 p-2">
+                                    Vaciar Carrito
+                                </button>
 
                             </div>
                         </div>

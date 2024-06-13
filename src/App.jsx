@@ -1,12 +1,21 @@
 import { Header } from "./components/Header"
 import { Guitar } from "./components/Guitar"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { db } from "./data/guitars.js"
 
 function App() {
-  const [data, setData] = useState(db)
-  const [cart, setCart] = useState([])
 
+  const initialCart = () => {
+    const localStorageCart = localStorage.getItem('cart');
+    return localStorageCart ? JSON.parse(localStorageCart) : []
+  }
+
+  const [data] = useState(db)
+  const [cart, setCart] = useState(initialCart)
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart])
 
   // Agregar items al carrito
   const addCart = (item) => {
@@ -15,7 +24,7 @@ function App() {
       if (itemExists) {
         return prevCart.map(guitar => guitar.id === item.id ? { ...guitar, cantidad: guitar.cantidad + 1 } : guitar)
       } else {
-        return [...prevCart, {...item, cantidad: 1}]
+        return [...prevCart, { ...item, cantidad: 1 }]
       }
     })
   }
@@ -29,9 +38,11 @@ function App() {
   const moreGuitar = (id) => {
     setCart(prevCart =>
       prevCart.map(guitar =>
-        guitar.id === id ? { ...guitar, cantidad: guitar.cantidad + 1 } : guitar
+        guitar.id === id
+          ? { ...guitar, cantidad: guitar.cantidad + 1 }
+          : guitar
       )
-    );
+    )
   }
 
   // Disminuir cantidad a cada item del carrito
@@ -43,7 +54,11 @@ function App() {
             ? { ...guitar, cantidad: guitar.cantidad - 1 }
             : guitar
         )
-    );
+    )
+  }
+
+  const vaciarCart = () => {
+    setCart([])
   }
 
   console.log(cart)
@@ -56,6 +71,7 @@ function App() {
         removeFromCart={removeFromCart}
         moreGuitar={moreGuitar}
         lessGuitar={lessGuitar}
+        vaciarCart={vaciarCart}
       />
 
       <main className="container-xl mt-5">
